@@ -36,11 +36,7 @@ def read_clstr():
 	for cluster in cluster_groups:
 		name, seqs = cluster.next().strip()[1:], []
 
-		for raw_seq in cluster_groups.next():
-			seq = raw_seq.split('>')[1].split('...')[0]
-			if '*' in raw_seq: name = seq
-			seqs.append(seq)
-		#seqs = [seq.split('>')[1].split('...')[0] for seq in cluster_groups.next()]
+		seqs = [seq.split('>')[1].split('...')[0] for seq in cluster_groups.next()]
 		cluster_dic[name] = len(seqs)
 
 	# return the cluster dictionary
