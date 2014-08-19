@@ -23,6 +23,7 @@ parser.add_argument('-c', '--cluster', metavar='.clstr file', dest='cluster', ty
 			help='The .clstr file producec by CD-hit that contains the cluster information.')
 args = parser.parse_args()
 
+
 def read_clstr():
 
 	# parse through the .clstr file and create a dictionary
@@ -34,17 +35,14 @@ def read_clstr():
 	# parse through the cluster file and store the cluster name + sequences in the dictionary
 	cluster_groups = (x[1] for x in itertools.groupby(cluster_file, key=lambda line: line[0] == '>'))
 	for cluster in cluster_groups:
-		name, seqs = cluster.next().strip()[1:], []
+		name, seqs = cluster.next().strip()[1:].replace(' ','_'), []
 
-		for raw_seq in cluster_groups.next():
-			seq = raw_seq.split('>')[1].split('...')[0]
-			if '*' in raw_seq: name = seq
-			seqs.append(seq)
-		#seqs = [seq.split('>')[1].split('...')[0] for seq in cluster_groups.next()]
+		seqs = [seq.split('>')[1].split('...')[0] for seq in cluster_groups.next()]
 		cluster_dic[name] = len(seqs)
 
 	# return the cluster dictionary
 	return cluster_dic
+
 
 def expand_blast(cluster_dic):
 
